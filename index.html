@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>jQuery Rellax Plugin Demo and Documentation</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.js"></script>
+	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto+Slab:700">
+	<link rel="stylesheet" type="text/css" href="assets/css/prism.css">
+	<style>
+		* {
+			box-sizing: border-box;
+			margin: 0;
+		}
+
+		html {
+			font-size: 112.5%;
+			line-height: 1.6;
+		}
+
+		body {
+			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+		}
+
+		h1, .h1, h2, h3 {
+			font-family: 'Roboto Slab', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+		}
+
+		h1, .h1 {
+			font-size: 3em;
+		}
+
+		h2 {
+			font-size: 2em;
+		}
+
+		h3 {
+			font-size: 1.5em;
+		}
+
+		h2, h3 {
+			margin-top: 2em;
+			margin-bottom: 1em;
+		}
+
+		h2:first-child,
+		h3:first-child {
+			margin-top: 1em;
+		}
+
+		pre {
+			margin-top: 0.5em;
+			margin-bottom: 0.5em;
+		}
+
+		p {
+			margin-top: 1em;
+			margin-bottom: 1em;
+		}
+
+		header {
+			position: relative;
+			height: 100vh;
+		}
+
+		section > :last-child {
+			margin-bottom: 2em;
+		}
+
+		section {
+			background: white;
+			overflow: hidden;
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		table {
+			width: 100%;
+			border-spacing: 0;
+			border-collapse: collapse;
+			margin-left: -0.5em;
+			margin-right: -0.5em;
+			margin-bottom: 2em;
+		}
+
+		th, td {
+			padding: 0.25em 0.5em;
+			text-align: left;
+			border: 1px solid #eee;
+		}
+
+		[data-rellax-container],
+		.rellax-wrapper {
+		    position: absolute;
+		    top: 0;
+		    left: 0;
+		    overflow: hidden;
+		    width: 100%;
+		    height: 100%;
+		}
+
+		.fill {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate3d(-50%, -50%, 0);
+			min-width: 100%;
+			min-height: 100vh;
+			object-fit: cover;
+		}
+
+		.header-content-wrap {
+			position: relative;
+		    width: 100%;
+		    height: 100%;
+		    overflow: hidden;
+		    display: flex;
+		    flex-wrap: wrap;
+		    align-items: center;
+		    justify-content: center;
+		    background: rgba(0,0,0,0.5);
+		    color: white;
+		}
+
+		.header-content-wrap.darker {
+		    background: rgba(0,0,0,0.7);
+		}
+
+		.header-content {
+		    text-align: center;
+		}
+
+		.content-wrap {
+			max-width: 44em;
+			margin-left: auto;
+			margin-right: auto;
+			padding-left: 2em;
+			padding-right: 2em;
+		}
+
+		.c-button {
+			display: inline-block;
+			padding: 0.5em 1em;
+			border: 1px solid currentColor;
+			border-radius: 0.25em;
+			background: none;
+			font: inherit;
+			text-decoration: none;
+			color: inherit;
+		}
+
+		.c-button + .c-button {
+			margin-left: 0.5em;
+		}
+
+		.c-button--primary {
+			background: white;
+			color: black;
+		}
+
+		.badge {
+			position: absolute;
+			top: 100%;
+			right: 100px;
+			display: flex;
+			margin-top: -50px;
+			justify-content: center;
+			align-items: center;
+			width: 100px;
+			height: 100px;
+			background: white;
+			border-radius: 50%;
+		}
+
+	</style>
+</head>
+<body>
+	<header>
+		<div data-rellax data-rellax-container>
+			<img class="fill" data-rellax src="assets/photo3.jpeg" alt="">
+		</div>
+		<div class="header-content-wrap darker">
+			<div class="content-wrap">
+				<h1>Rellax.jQuery.js</h1>
+				<p>A lightweight jQuery plugin that allows you to add scroll dependent parallax effects to your website with ease.</p>
+				<a class="c-button c-button--primary" href="jquery.rellax.min.js" download>Download</button>
+				<a class="c-button" href="https://github.com/pixelgrade/rellax">View on github</a>
+			</div>
+		</div>
+	</header>
+	<section>
+		<div class="content-wrap">
+			<h2>What is it?</h2>
+			<p>The script was supposed to be used to give a sense of depth for the backgrounds we were using on some hero areas. But in it’s current state the plugin works both for foreground and background elements.</p>
+			<p>It is pretty much markup-agnostic to say so and it covers most of the cases we have encountered in our experiences in developing parallax websites. That being said, you can use it with images, sliders and even videos.</p>
+		</div>
+	</section>
+	<header>
+		<div data-rellax data-rellax-container>
+			<video class="fill" data-rellax autoplay loop muted>
+				<source src="assets/video.mp4" type="video/mp4">
+			Your browser does not support the video tag.
+			</video>
+		</div>
+		<div class="header-content-wrap">
+			<div>
+				<span class="h1">Video Background Example</span>
+			</div>
+		</div>
+	</header>
+	<section>
+		<div class="content-wrap">
+			<h2>Installation</h2>
+			<p>Include jQuery and the Rellax plugin on your page</p>
+			<pre><code class="language-html">&lt;script src=”jquery.min.js”&gt;&lt;/script&gt;
+&lt;script src=”jquery.rellax.min.js&gt;&lt;/script&gt;</code></pre>
+			<h3>Use data attributes to get things moving</h3>
+			<pre><code class="language-html">&lt;img data-rellax src=&quot;path/to/my-image.jpg&quot;&gt;</code></pre>
+			<p>The <code class="language-">data-rellax-container</code> attirbute tells the plugin this is just a wrapper in order to keep child elements from overflowing. These elements won’t be affected by <code class="language-">data-rellax-amount</code> and you still have to add <code class="language-">data-rellax</code> to them in order to work.</p>
+			<p>Usage:</p>
+			<pre><code class="language-html">&lt;div data-rellax data-rellax-container&gt;
+    &lt;img data-rellax src=&quot;path/to/my-image.jpg&quot;&gt;
+&lt;/div&gt;</code></pre>
+			<h3>Use JavaScript to run the plugin</h3>
+			<p>If you don't fancy data attributes you can always use the standard way of running the plugin</p>
+			<pre><code class="language-js">$(&#39;.my-selector&#39;).rellax(options);</code></pre>
+			<h3>Options</h3>
+			<table>
+				<tr>
+					<th>name</th>
+					<th>default</th>
+					<th>data attribute</th>
+				</tr>
+				<tr>
+					<td>amount</td>
+					<td>0.5</td>
+					<td>data-rellax-amount</td>
+				</tr>
+				<tr>
+					<td>bleed</td>
+					<td>0</td>
+					<td>data-rellax-bleed</td>
+				</tr>
+				<tr>
+					<td>container</td>
+					<td>"[data-rellax-container]"</td>
+					<td>&mdash;</td>
+				</tr>
+			</table>
+			<p><strong>amount</strong></p>
+			<p>This option tells the plugin how far in the background you want the element to appear. If set to 0 the plugin will ignore this element keeping it on the same plane with the rest of the content (same behavior as setting position: static to the element). If set to 1 the element will seem to be position very far back and it’s position relative to the screen won’t be affected by the scroll position (same behavior as setting position: fixed to the element).</p>
+			<p><strong>bleed</strong></p>
+			<p>When using a container to keep parallax elements from overflowing their parent some visual artefacts which you may identify them as blurry edges. Increase the value of this option to get rid of those. Most of the times 20 should do.</p>
+			<p><strong>container</strong></p>
+			<p>A custom selector to target the parallax wrappers if data-attributes dont suit you</p>
+			<h2>A comprehensive example</h2>
+			<pre><code class="language-html">&lt;div class=&quot;rellax&quot; data-rellax-container&gt;
+	&lt;img class=&quot;rellax&quot; src=&quot;path/to/my-image.jpg&quot;&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;rellax-fixed rellax-wrapper&quot;&gt;
+	&lt;img class=&quot;rellax-fixed&quot; src=&quot;path/to/my-image.jpg&quot;&gt;
+&lt;/div&gt;
+
+&lt;span data-rellax data-rellax-amount=&quot;0.75&quot;&gt;Cool!&lt;/span&gt;</code></pre>
+
+<pre><code class="language-html">&lt;script&gt;
+	// overwrite default amount value for all elements
+	$.fn.rellax.defaults.amount = 0.25;
+
+	$(document).ready(function() {
+		// use custom selector to target elements
+		// all elements with data-rellax will still be initialized with the new defaults
+		$(&#39;.rellax&#39;).rellax();
+
+		// use different settings for just a set of elements
+		$(&#39;.rellax-fixed&#39;).rellax({
+			amount: 1,
+			container: &#39;.rellax-wrapper&#39;
+		});
+	});
+&lt;/script&gt;</code></pre>
+		</div>
+	</section>
+	<header>
+		<div class="rellax" data-rellax-container>
+			<img class="rellax fill" src="assets/photo1.jpeg" alt="">
+			<div class="header-content-wrap"></div>
+		</div>
+	</header>
+	<header>
+		<div class="rellax-fixed rellax-wrapper">
+			<img class="rellax-fixed fill" src="assets/photo2.jpeg" alt="">
+			<div class="header-content-wrap"></div>
+		</div>
+		<span class="badge" data-rellax data-rellax-amount="0.75">Cool!</span>
+	</header>
+	<script>
+		// overwrite default amount value for all elements
+		$.fn.rellax.defaults.amount = 0.75;
+
+		$(document).ready(function() {
+			// use custom selector to target elements
+			// all elements with data-rellax will still be initialized with the new defaults
+			$('.rellax').rellax();
+
+			// use different settings for just a set of elements
+			$('.rellax-fixed').rellax({
+				amount: 1,
+				container: '.rellax-wrapper'
+			});
+		});
+	</script>
+	<script src="assets/js/prism.js"></script>
+	<script src="jquery.rellax.js"></script>
+</body>
+</html>
