@@ -172,9 +172,21 @@
 			border-radius: 50%;
 		}
 
+		.js [data-rellax],
+		.js .rellax,
+		.js .rellax-fixed {
+			opacity: 0;
+			transition: opacity .5s ease-out;
+		}
+
+		.js .rellax-active {
+			opacity: 1;
+		}
+
 	</style>
 </head>
 <body>
+	<script type="text/javascript">document.getElementsByTagName('body')[0].className ='js'</script>
 	<header>
 		<div data-rellax data-rellax-container>
 			<img class="fill" data-rellax src="assets/photo3.jpeg" alt="">
@@ -285,14 +297,14 @@
 	<header>
 		<div class="rellax" data-rellax-container>
 			<img class="rellax fill" src="assets/photo1.jpeg" alt="">
-			<div class="header-content-wrap"></div>
 		</div>
+		<div class="header-content-wrap"></div>
 	</header>
 	<header>
 		<div class="rellax-fixed rellax-wrapper">
 			<img class="rellax-fixed fill" src="assets/photo2.jpeg" alt="">
-			<div class="header-content-wrap"></div>
 		</div>
+		<div class="header-content-wrap darker"></div>
 		<span class="badge" data-rellax data-rellax-amount="0.75">Cool!</span>
 	</header>
 	<script src="assets/js/prism.js"></script>
@@ -301,16 +313,14 @@
 		// overwrite default amount value for all elements
 		$.fn.rellax.defaults.amount = 0.75;
 
-		$(document).ready(function() {
-			// use custom selector to target elements
-			// all elements with data-rellax will still be initialized with the new defaults
-			$('.rellax').rellax();
+		// use custom selector to target elements
+		// all elements with data-rellax will still be initialized with the new defaults
+		$('.rellax').rellax();
 
-			// use different settings for just a set of elements
-			$('.rellax-fixed').rellax({
-				amount: 1,
-				container: '.rellax-wrapper'
-			});
+		// use different settings for just a set of elements
+		$('.rellax-fixed').rellax({
+			amount: 1,
+			container: '.rellax-wrapper'
 		});
 	</script>
 </body>

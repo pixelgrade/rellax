@@ -10,7 +10,7 @@
 
     var $window = $(window),
         windowHeight = $window.height(),
-        lastKnownScrollY;
+        lastKnownScrollY = $window.scrollTop();
 
     var elements = new Array();
 
@@ -21,11 +21,11 @@
         window.requestAnimationFrame(updateAll);
     })();
 
-    $window.on('load resize', function(e) {
+    $window.on('resize', function(e) {
         windowHeight = $window.height();
     });
 
-    $window.on('load scroll', function(e) {
+    $window.on('scroll', function(e) {
         lastKnownScrollY = $(e.target).scrollTop();
     });
 
@@ -50,6 +50,7 @@
         self._bindEvents();
 
         elements.push(self);
+        $el.addClass('rellax-active', true);
     }
 
     $.extend(Rellax.prototype, {
@@ -86,7 +87,8 @@
                 width: self.width,
                 height: self.height,
                 marginTop: 0,
-                marginLeft: 0
+                marginLeft: 0,
+                transform: 'none'
             }
 
             if (self.isContainer) $.extend(style, {zIndex: -1});
@@ -150,8 +152,8 @@
         container: '[data-rellax-container]'
     };
 
-    $(document).ready(function() {
+    // $(document).ready(function() {
         $('[data-rellax]').rellax();
-    });
+    // });
 
 })(jQuery, window, document);
