@@ -1,5 +1,5 @@
 /*!
- * jQuery Rellax Plugin v0.1
+ * jQuery Rellax Plugin v0.2.0
  * Examples and documentation at http://pixelgrade.github.io/rellax/
  * Copyright (c) 2016 PixelGrade http://www.pixelgrade.com
  * Licensed under MIT http://www.opensource.org/licenses/mit-license.php/
@@ -9,8 +9,9 @@
     if (!window.requestAnimationFrame) return;
 
     var $window = $(window),
+        windowWidth = $window.width(),
         windowHeight = $window.height(),
-        lastKnownScrollY = $window.scrollTop();
+        lastKnownScrollY;
 
     var elements = new Array();
 
@@ -21,11 +22,12 @@
         window.requestAnimationFrame(updateAll);
     })();
 
-    $window.on('resize', function(e) {
+    $window.on('load resize', function(e) {
+        windowWidth = $window.width();
         windowHeight = $window.height();
     });
 
-    $window.on('scroll', function(e) {
+    $window.on('load scroll', function(e) {
         lastKnownScrollY = $(e.target).scrollTop();
     });
 
@@ -50,7 +52,6 @@
         self._bindEvents();
 
         elements.push(self);
-        $el.addClass('rellax-active', true);
     }
 
     $.extend(Rellax.prototype, {
@@ -60,6 +61,25 @@
             $window.on('load resize', function(e) {
                 self._reloadElement();
             });
+        },
+        _scaleElement: function() {
+            var parentWidth = this.$parent.data("plugin_" + Rellax).width,
+                parentHeight = this.$parent.data("plugin_" + Rellax).height,
+                oldWidth = this.width,
+                oldHeight = this.height,
+                newWidth,
+                newHeight;
+
+            newHeight = parentHeight + (windowHeight - parentHeight) * this.options.amount;
+            newWidth = windowWidth;
+
+            scale = Math.max(newWidth / oldWidth, newHeight / oldHeight);
+
+            this.width = oldWidth * scale;
+            this.height = oldHeight * scale;
+
+            this.offset.top -= (newHeight - parentHeight)/2;
+            this.offset.left -= (oldWidth * scale - parentWidth)/2;
         },
         _reloadElement: function() {
             var self = this,
@@ -72,6 +92,10 @@
             self.width = $el.width();
             self.height = $el.height();
             self.offset = $el.offset();
+
+            if ( self.$parent.length ) {
+                self._scaleElement();
+            }
 
             if ( self.isContainer ) {
                 self.width += 2 * self.options.bleed;
@@ -87,11 +111,11 @@
                 width: self.width,
                 height: self.height,
                 marginTop: 0,
-                marginLeft: 0,
-                transform: 'none'
+                marginLeft: 0
             }
 
             if (self.isContainer) $.extend(style, {zIndex: -1});
+
             if (self.$parent.length) {
 
                 $.extend(style, {
@@ -103,6 +127,7 @@
                     overflow: 'hidden',
                     zIndex: -1
                 });
+
             }
 
             $el.css(style);
@@ -142,6 +167,13 @@
         return this.each(function () {
             if ( ! $.data(this, "plugin_" + Rellax) ) {
                 $.data(this, "plugin_" + Rellax, new Rellax( this, options ));
+            } else {
+                var self = $.data(this, "plugin_" + Rellax);
+                if ( options && typeof options == 'string' ) {
+                    if ( options == "refresh" ) {
+                        self._reloadElement();
+                    }
+                }
             }
         });
     }
@@ -152,8 +184,8 @@
         container: '[data-rellax-container]'
     };
 
-    // $(document).ready(function() {
+    $(document).ready(function() {
         $('[data-rellax]').rellax();
-    // });
+    });
 
 })(jQuery, window, document);
