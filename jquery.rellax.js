@@ -1,5 +1,5 @@
 /*!
- * jQuery Rellax Plugin v0.2.0
+ * jQuery Rellax Plugin v0.2.1
  * Examples and documentation at http://pixelgrade.github.io/rellax/
  * Copyright (c) 2016 PixelGrade http://www.pixelgrade.com
  * Licensed under MIT http://www.opensource.org/licenses/mit-license.php/
@@ -36,7 +36,7 @@
         this.options = $.extend({}, $.fn.rellax.defaults, options);
 
         var self = this,
-            $el = $(this.element),
+            $el = $(this.element).addClass('rellax-active'),
             myAmount = $el.data('rellax-amount'),
             myBleed = $el.data('rellax-bleed');
 
@@ -68,17 +68,14 @@
                 oldWidth = this.width,
                 oldHeight = this.height,
                 newWidth,
-                newHeight;
+                newHeight,
+                scale;
 
-            newHeight = parentHeight + (windowHeight - parentHeight) * this.options.amount;
-            newWidth = windowWidth;
-
-            scale = Math.max(newWidth / oldWidth, newHeight / oldHeight);
+            scale = Math.max(parentWidth / oldWidth, parentHeight / oldHeight);
 
             this.width = oldWidth * scale;
             this.height = oldHeight * scale;
 
-            this.offset.top -= (newHeight - parentHeight)/2;
             this.offset.left -= (oldWidth * scale - parentWidth)/2;
         },
         _reloadElement: function() {
