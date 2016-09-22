@@ -11,9 +11,8 @@
     var $window = $(window),
         windowWidth = $window.width(),
         windowHeight = $window.height(),
+        elements = new Array(),
         lastKnownScrollY;
-
-    var elements = new Array();
 
     (function updateAll() {
         $.each(elements, function(i, element) {

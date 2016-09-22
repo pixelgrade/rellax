@@ -173,11 +173,47 @@
 			opacity: 1;
 		}
 
+		.c-bully {
+			position: fixed;
+			top: 50%;
+			right: 2rem;
+
+			margin-bottom: 0.5em;
+
+			font-size: 14px;
+
+			transform: translate(0, -50%);
+		}
+
+		.c-bully--inversed {
+			color: white;
+		}
+
+		.c-bully__bullet {
+			width: 1em;
+			height: 1em;
+			margin-top: 0.5em;
+
+			border: 2px solid currentColor;
+			border-radius: 50%;
+			cursor: pointer;
+		}
+
+		.c-bully__bullet--active {
+			position: absolute;
+			top: 0;
+			left: 0;
+
+			background: currentColor;
+
+			transition: top .15s ease-in-out;
+		}
+
 	</style>
 </head>
 <body>
 	<script type="text/javascript">document.getElementsByTagName('body')[0].className ='js'</script>
-	<header>
+	<header data-bully>
 		<div data-rellax data-rellax-container>
 			<img class="fill" data-rellax src="assets/photo3.jpeg" alt="">
 		</div>
@@ -197,7 +233,7 @@
 			<p>It is pretty much markup-agnostic to say so and it covers most of the cases we have encountered in our experiences in developing parallax websites. That being said, you can use it with images, sliders and even videos.</p>
 		</div>
 	</section>
-	<header>
+	<header data-bully>
 		<div data-rellax data-rellax-container>
 			<video class="fill" data-rellax autoplay loop muted>
 				<source src="assets/video.mp4" type="video/mp4">
@@ -284,13 +320,13 @@
 &lt;/script&gt;</code></pre>
 		</div>
 	</section>
-	<header>
+	<header data-bully>
 		<div class="rellax" data-rellax-container>
 			<img class="rellax fill" src="assets/photo1.jpeg" alt="">
 		</div>
 		<div class="header-content-wrap"></div>
 	</header>
-	<header>
+	<header data-bully>
 		<div class="rellax-fixed rellax-wrapper">
 			<img class="rellax-fixed fill" src="assets/photo2.jpeg" alt="">
 		</div>
@@ -299,6 +335,7 @@
 	</header>
 	<script src="assets/js/prism.js"></script>
 	<script src="jquery.rellax.js"></script>
+	<script src="jquery.bully.js"></script>
 	<script>
 		// overwrite default amount value for all elements
 		$.fn.rellax.defaults.amount = 0.75;
