@@ -7,6 +7,8 @@
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.js"></script>
 	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto+Slab:700">
 	<link rel="stylesheet" type="text/css" href="assets/css/prism.css">
+	<link rel="stylesheet" type="text/css" href="assets/css/slick.css">
+	<link rel="stylesheet" type="text/css" href="assets/css/slick-theme.css">
 	<style>
 		* {
 			box-sizing: border-box;
@@ -60,7 +62,7 @@
 
 		header {
 			position: relative;
-			height: 100vh;
+			height: 60vh;
 		}
 
 		section > :last-child {
@@ -68,10 +70,11 @@
 		}
 
 		section {
-			background: white;
-			overflow: hidden;
+			position: relative;
 			margin-left: auto;
 			margin-right: auto;
+			overflow: hidden;
+			background: white;
 		}
 
 		table {
@@ -108,12 +111,7 @@
 		    flex-wrap: wrap;
 		    align-items: center;
 		    justify-content: center;
-		    background: rgba(0,0,0,0.5);
 		    color: white;
-		}
-
-		.header-content-wrap.darker {
-		    background: rgba(0,0,0,0.7);
 		}
 
 		.header-content {
@@ -166,11 +164,11 @@
 		.js .rellax,
 		.js .rellax-fixed {
 			opacity: 0;
-			transition: opacity .5s ease-out;
 		}
 
 		.js .rellax-active {
 			opacity: 1;
+			transition: opacity .5s ease-out;
 		}
 
 		.c-bully {
@@ -209,13 +207,30 @@
 			transition: top .15s ease-in-out;
 		}
 
+		[data-rellax] {
+			will-change: transform;
+		}
+
+		.fill {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+
+		.js-slider img {
+			height: 100%;
+			object-fit: cover;
+		}
+
 	</style>
 </head>
 <body>
 	<script type="text/javascript">document.getElementsByTagName('body')[0].className ='js'</script>
 	<header data-bully>
-		<div data-rellax data-rellax-container>
-			<img class="fill" data-rellax src="assets/photo3.jpeg" alt="">
+		<div data-rellax-container>
+			<div class="fill" data-rellax>
+				<img class="fill" src="assets/photo3.jpeg" alt="">
+			</div>
 		</div>
 		<div class="header-content-wrap darker">
 			<div class="content-wrap">
@@ -243,6 +258,31 @@
 		<div class="header-content-wrap">
 			<div>
 				<span class="h1">Video Background Example</span>
+			</div>
+		</div>
+	</header>
+	<header data-bully>
+		<div data-rellax data-rellax-container>
+			<div id="map" class="fill" data-rellax></div>
+		</div>
+		<div class="header-content-wrap">
+			<div>
+				<span class="h1">Google Map Background Example</span>
+			</div>
+		</div>
+	</header>
+	<header data-bully>
+		<div data-rellax data-rellax-container>
+			<div data-rellax class="fill js-slider">
+				<img class="fill" src="assets/photo1.jpeg" alt="">
+				<img class="fill" src="assets/photo2.jpeg" alt="">
+				<img class="fill" src="assets/photo3.jpeg" alt="">
+				<img class="fill" src="assets/photo4.jpeg" alt="">
+			</div>
+		</div>
+		<div class="header-content-wrap" style="pointer-events: none">
+			<div>
+				<span class="h1">Slider Background Example</span>
 			</div>
 		</div>
 	</header>
@@ -321,33 +361,37 @@
 		</div>
 	</section>
 	<header data-bully>
-		<div class="rellax" data-rellax-container>
-			<img class="rellax fill" src="assets/photo1.jpeg" alt="">
+		<div data-rellax data-rellax-container>
+			<img class="fill" data-rellax src="assets/photo1.jpeg" alt="">
 		</div>
 		<div class="header-content-wrap"></div>
 	</header>
 	<header data-bully>
-		<div class="rellax-fixed rellax-wrapper">
-			<img class="rellax-fixed fill" src="assets/photo2.jpeg" alt="">
+		<div data-rellax data-rellax-container>
+			<img class="fill" data-rellax src="assets/photo2.jpeg" alt="">
 		</div>
 		<div class="header-content-wrap darker"></div>
-		<span class="badge" data-rellax data-rellax-amount="0.75">Cool!</span>
 	</header>
 	<script src="assets/js/prism.js"></script>
+	<script src="assets/js/slick.js"></script>
+
+	<script src="http://maps.google.com/maps/api/js"></script>
+	<script src="assets/js/gmaps.js"></script>
+
 	<script src="jquery.rellax.js"></script>
 	<script src="jquery.bully.js"></script>
+
 	<script>
-		// overwrite default amount value for all elements
-		$.fn.rellax.defaults.amount = 0.75;
+		$( '[data-rellax]' ).rellax();
 
-		// use custom selector to target elements
-		// all elements with data-rellax will still be initialized with the new defaults
-		$('.rellax').rellax();
+		$( '.js-slider' ).slick();
 
-		// use different settings for just a set of elements
-		$('.rellax-fixed').rellax({
-			amount: 1,
-			container: '.rellax-wrapper'
+		$( window ).on( 'load', function() {
+			new GMaps({
+				div: '#map',
+				lat: -12.043333,
+				lng: -77.028333
+			});
 		});
 	</script>
 </body>
