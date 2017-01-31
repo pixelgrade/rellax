@@ -18,34 +18,46 @@
             elements = [];
 
         function loop() {
-            updateAll();
+            if ( frameRendered !== true ) {
+                updateAll();
+            }
             window.requestAnimationFrame( loop );
+            frameRendered = true;
         }
 
         $window.on( 'resize', function() {
             windowWidth = window.innerWidth;
             windowHeight = window.innerHeight;
 
-            reloadAll();
-            prepareAll();
+            requestAnimationFrame(reloadAll);
+            requestAnimationFrame(prepareAll);
+            requestAnimationFrame(function() {
+                updateAll( true );
+            });
         } );
 
+        var frameRendered = true;
+
         $window.on( 'scroll', function() {
-            lastScrollY = window.scrollY;
+            if ( frameRendered === true ) {
+                lastScrollY = window.scrollY;
+            }
+            frameRendered = false;
         } );
 
         $window.on( 'load', function() {
-            window.requestAnimationFrame( loop );
             reloadAll();
             prepareAll();
+            updateAll( true );
             $.each(elements, function(i, element) {
                 element.$el.addClass( 'rellax-active' );
             });
+            window.requestAnimationFrame( loop );
         });
 
-        function updateAll() {
+        function updateAll( forced ) {
             $.each(elements, function(i, element) {
-                element._updatePosition();
+                element._updatePosition( forced );
             });
         }
 
@@ -94,6 +106,7 @@
             },
             _reloadElement: function() {
                 this.$el.removeAttr( 'style' );
+                this.$el.removeClass( 'rellax-element' );
 
                 this.offset = this.$el.offset();
                 this.height = this.$el.outerHeight();
@@ -113,13 +126,10 @@
             },
             _prepareElement: function() {
                 if ( this.parent == undefined ) {
+                    this.$el.addClass( 'rellax-element' );
                     this.$el.css({
-                        position: 'fixed',
                         top: this.offset.top,
-                        left: this.offset.left,
-                        width: this.width,
-                        height: this.height,
-                        overflow: 'hidden'
+                        height: this.height
                     });
                 } else {
                     this.$el.css({
@@ -132,16 +142,23 @@
             _isInViewport: function( offset ) {
                 return lastScrollY > this.offset.top - windowHeight + offset && lastScrollY < this.offset.top + windowHeight + offset;
             },
-            _updatePosition: function() {
+            _updatePosition: function( forced ) {
                 var progress = this._getProgress(),
                     height = this.parent !== undefined ? this.parent.height : this.height,
                     move = ( windowHeight + height ) * ( progress - 0.5 ) * this.options.amount,
-                    scale = 1 + Math.max(0, ( this.options.scale - 1 ) * progress ),
+                    scale = 1 + ( this.options.scale - 1 ) * progress,
                     scaleTransform = scale > 1 ? 'scale(' + scale + ')' : '';
 
                 if ( this.parent === undefined && this.$parent.length ) {
                     move *= -1;
                 }
+
+                if ( forced !== true && ( progress < 0 || progress > 1 ) ) {
+                    this.$el.addClass( 'rellax-hidden' );
+                    return;
+                }
+
+                this.$el.removeClass( 'rellax-hidden' );
 
                 this.$el.data( 'progress', progress );
 
@@ -178,7 +195,7 @@
         $.fn.rellax.defaults = {
             amount: 0.5,
             bleed: 0,
-            scale: 1,
+            scale: 1.2,
             container: '[data-rellax-container]'
         };
 
