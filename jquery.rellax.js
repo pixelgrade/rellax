@@ -48,7 +48,9 @@
         $window.on( 'load', function() {
             reloadAll();
             prepareAll();
-            updateAll( true );
+            requestAnimationFrame(function() {
+                updateAll( true );
+            });
             $.each(elements, function(i, element) {
                 element.$el.addClass( 'rellax-active' );
             });
@@ -112,6 +114,9 @@
                 this.height = this.$el.outerHeight();
                 this.width = this.$el.outerWidth();
 
+                this.offset.top -= this.options.bleed;
+                this.height += 2 * this.options.bleed;
+
                 if ( this.parent !== undefined ) {
                     this.height = windowHeight - ( windowHeight - this.parent.height ) * ( 1 - this.options.amount );
                     this.offset.top = ( this.parent.height - this.height ) / 2;
@@ -128,7 +133,10 @@
                 if ( this.parent == undefined ) {
                     this.$el.addClass( 'rellax-element' );
                     this.$el.css({
+                        position: 'fixed',
+                        left: this.offset.left,
                         top: this.offset.top,
+                        width: this.width,
                         height: this.height
                     });
                 } else {
@@ -195,7 +203,7 @@
         $.fn.rellax.defaults = {
             amount: 0.5,
             bleed: 0,
-            scale: 1.2,
+            scale: 1,
             container: '[data-rellax-container]'
         };
 
