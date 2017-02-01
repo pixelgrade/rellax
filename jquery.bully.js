@@ -1,5 +1,5 @@
 /*!
- * jQuery Bully Plugin v0.1.2
+ * jQuery Bully Plugin v0.1.3
  * Examples and documentation at http://pixelgrade.github.io/rellax/
  * Copyright (c) 2016 PixelGrade http://www.pixelgrade.com
  * Licensed under MIT http://www.opensource.org/licenses/mit-license.php/
@@ -11,7 +11,7 @@
             windowHeight = $window.height(),
             elements = [],
             $bully,
-            lastScrollY = window.scrollY,
+            lastScrollY = (window.pageYOffset || document.documentElement.scrollTop)  - (document.documentElement.clientTop || 0),
             current = 0,
             inversed = false,
             frameRendered = true;
@@ -81,7 +81,7 @@
 
         $window.on( 'scroll', function( e ) {
             if ( frameRendered === true ) {
-                lastScrollY = window.scrollY;
+                lastScrollY = (window.pageYOffset || document.documentElement.scrollTop)  - (document.documentElement.clientTop || 0);
             }
             frameRendered = false;
         } );
@@ -129,7 +129,7 @@
                 }
 
                 if ( self.options.scrollDuration === 'auto' ) {
-                    var duration = Math.abs( window.scrollY - self.offset.top ) / (
+                    var duration = Math.abs( lastScrollY - self.offset.top ) / (
                                    self.options.scrollPerSecond / 1000
                         );
                     $target.animate( {scrollTop: self.offset.top}, duration );
@@ -153,7 +153,7 @@
             scrollPerSecond: 4000
         };
 
-        $window.on( 'rellax ' + $.fn.bully.defaults.reloadEvent, reloadAll );
+        $window.on( 'rellax load', reloadAll );
 
 
     }
