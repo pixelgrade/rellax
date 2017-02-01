@@ -1,5 +1,5 @@
 /*!
- * jQuery Bully Plugin v0.1.0
+ * jQuery Bully Plugin v0.1.1
  * Examples and documentation at http://pixelgrade.github.io/rellax/
  * Copyright (c) 2016 PixelGrade http://www.pixelgrade.com
  * Licensed under MIT http://www.opensource.org/licenses/mit-license.php/
@@ -7,17 +7,14 @@
 ;(function ($, window, document, undefined) {
 
     var $window = $(window),
-        windowWidth = $window.width(),
         windowHeight = $window.height(),
-        elements = new Array(),
+        elements = [],
         $bully,
-        bullyOffset,
         lastKnownScrollY,
         current = 0,
         inversed = false;
 
     $bully = $( '<div class="c-bully">' ).appendTo( 'body' );
-    bullyOffset = $bully.offset();
     $current = $( '<div class="c-bully__bullet c-bully__bullet--active">' ).appendTo( $bully );
 
     (function update() {
@@ -41,7 +38,11 @@
         }
 
         if ( count !== current ) {
-            var offset = $bully.children( '.c-bully__bullet' ).first().outerHeight( true ) * ( count - 1 );
+            var offset = $bully.children( '.c-bully__bullet' ).not('.c-bully__bullet--active').first().outerHeight( true ) * ( count - 1 );
+            $current.removeClass( 'c-bully__bullet--squash' );
+            setTimeout(function() {
+                $current.addClass( 'c-bully__bullet--squash' );
+            });
             $current.css( 'top', offset );
             current = count;
         }
@@ -55,11 +56,30 @@
         });
     }
 
-    $window.on('load scroll', function(e) {
-        lastKnownScrollY = $(e.target).scrollTop();
+    function staggerClass($elements, classname, timeout) {
+
+        $.each($elements, function(i, obj) {
+
+            var stagger = i * timeout;
+
+            setTimeout(function () {
+                obj.$bullet.addClass(classname);
+            }, stagger);
+        });
+    }
+
+    $window.on('load', function(e) {
+        staggerClass(elements, 'c-bully__bullet--pop', 400);
     });
 
-    $window.on('load resize', reloadAll);
+    $window.on('load resize scroll', function(e) {
+        lastKnownScrollY = window.scrollY;
+    });
+
+    $window.on('load resize', function() {
+        lastKnownScrollY = window.scrollY;
+        reloadAll();
+    });
 
     function Bully(element, options) {
         this.element = element;
@@ -76,10 +96,12 @@
             self.onClick();
         });
 
+        this.$bullet = $bullet;
+
         self._reloadElement();
         elements.push(self);
         current = 0;
-    }
+    };
 
     Bully.prototype = {
         constructor: Bully,
@@ -89,17 +111,23 @@
         },
         onClick: function() {
 
-            var self = this;
+            var self = this,
+                $target = $( 'html, body' );
 
             if ( self.options.scrollDuration == 0 ) {
-                $( 'html, body' ).scrollTop( self.offset.top );
+                $target.scrollTop( self.offset.top );
+                return;
             }
 
-            $( 'html, body' ).animate({
-                scrollTop: self.offset.top
-            }, self.options.scrollDuration );
+            if ( self.options.scrollDuration === 'auto' ) {
+                var duration = Math.abs(window.scrollY - self.offset.top) / (self.options.scrollPerSecond / 1000);
+                $target.animate({ scrollTop: self.offset.top }, duration);
+                return;
+            }
+
+            $target.animate({ scrollTop: self.offset.top }, self.options.scrollDuration );
         }
-    }
+    };
 
     $.fn.bully = function ( options ) {
         return this.each(function () {
@@ -107,12 +135,11 @@
                 $.data(this, "plugin_" + Bully, new Bully( this, options ));
             }
         });
-    }
-
-    $.fn.bully.defaults = {
-        scrollDuration: 600
     };
 
-    $('[data-bully]').bully();
+    $.fn.bully.defaults = {
+        scrollDuration: 'auto',
+        scrollPerSecond: 4000
+    };
 
 })( jQuery, window, document );
