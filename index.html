@@ -95,23 +95,34 @@
 			border: 1px solid #eee;
 		}
 
-		[data-rellax-container],
-		.rellax-wrapper {
-		    position: absolute;
-		    top: 0;
-		    left: 0;
-		    overflow: hidden;
-		    width: 100%;
-		    height: 100%;
-		}
-
-		.rellax-element {
-			position: fixed;
-			top: 0;
-			left: 0;
+		[data-rellax],
+		[data-rellax-container] {
 			width: 100%;
 			height: 100%;
+		}
+
+		[data-rellax] {
+			will-change: transform, opacity;
+			backface-visibility: hidden;
+		}
+
+		[data-rellax-container] {
 			overflow: hidden;
+		}
+
+		[data-rellax-container] [data-rellax] {
+			transition: opacity .3s ease-out;
+			opacity: 0;
+		}
+
+		.js [data-rellax-container] [data-rellax] {
+			opacity: 1;
+		}
+
+		.rellax-element.rellax-hidden {
+			pointer-events: none;
+			visibility: hidden;
+			opacity: 0;
 		}
 
 		.header-content-wrap {
