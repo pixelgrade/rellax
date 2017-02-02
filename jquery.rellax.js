@@ -1,5 +1,5 @@
 /*!
- * jQuery Rellax Plugin v0.3.2
+ * jQuery Rellax Plugin v0.3.3
  * Examples and documentation at http://pixelgrade.github.io/rellax/
  * Copyright (c) 2016 PixelGrade http://www.pixelgrade.com
  * Licensed under MIT http://www.opensource.org/licenses/mit-license.php/
@@ -44,20 +44,15 @@
                 this.height = this.$el.outerHeight();
                 this.width = this.$el.outerWidth();
 
-                this.offset.top -= this.options.bleed;
-                this.height += 2 * this.options.bleed;
-
-                if ( this.parent === undefined && this.$parent.length ) {
-                    var parentHeight = this.$parent.outerHeight();
-
-                    this.height = windowHeight - ( windowHeight - parentHeight ) * ( 1 - this.options.amount );
-                    this.offset.top = ( parentHeight - this.height ) / 2;
+                if ( this.parent === undefined ) {
+                    this.offset.top -= this.options.bleed;
+                    this.height += 2 * this.options.bleed;
                 }
             },
             _scaleElement: function() {
                 var parentHeight = this.$parent.outerHeight(),
                     parentWidth = this.$parent.outerWidth(),
-                    scaleY = parentHeight / this.height,
+                    scaleY = ( parentHeight + ( windowHeight - parentHeight ) * ( 1 - this.options.amount ) ) / this.height,
                     scaleX = parentWidth / this.width,
                     scale = Math.max(scaleX, scaleY);
 
@@ -68,7 +63,7 @@
                 this.offset.left = ( parentWidth - this.width ) / 2;
             },
             _prepareElement: function() {
-                if ( this.parent == undefined ) {
+                if ( this.parent === undefined ) {
                     this.$el.addClass( 'rellax-element' );
                     this.$el.css({
                         position: 'fixed',
